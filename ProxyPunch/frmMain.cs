@@ -30,47 +30,39 @@ namespace ProxyPunch
 		private void ServerAction(string strSocksIP, int socksPort, int localPort)
 		{
 			Reactor.Loop.Start(System.Threading.SynchronizationContext.Current);
-			notifyln("Attempting to connect to proxy server...");
+
+			notifyln("Ready for local connection.");
+			notifyln(String.Format("Please point your application's proxy settings to 127.0.0.1:{0}", localPort));
+
 
 			Reactor.Tcp.Server.Create(LocalListener =>
 			{
-				notifyln("Local listener created.");
-
 				Reactor.Tcp.Socket ProxyClient = Reactor.Tcp.Socket.Create(strSocksIP, socksPort);
+				notifyln("Attempting to connect to proxy server...");
+
 				ProxyClient.OnConnect += () =>
 				{
-					notifyln("Made it to Proxyclient.OnConnect");
 					notifyln(String.Format("Connection established with proxy server {0}:{1}.", strSocksIP, socksPort));
-
-					// route socket data to the local listener.
-					LocalListener.OnData += ProxyClient.Write;
-					LocalListener.OnEnd += ProxyClient.End;
-
-					// Make sure connection state is reciprocal.
-					ProxyClient.OnEnd += LocalListener.End;
 
 					// route local events to the socket.
 					ProxyClient.OnData += (data) =>
 					{
-						notifyln("Made it to Proxyclient.OnData");
-						LocalListener.Write(data);
 						notifyln(data.ToString(Encoding.ASCII));
+						LocalListener.Write(data);
 					};
 
 					ProxyClient.OnError += (error) =>
 					{
-						notifyln("Made it to Proxyclient.OnError");
+						notifyln(String.Format("Connection to proxy server dropped:\n\r{0}\n\r", error.Message));
 						LocalListener.End();
-						notifyln(String.Format("Connection to proxy server dropped:\n{0}\n", error.Message));
-						Reactor.Loop.Stop();
 					};
 
 					ProxyClient.OnEnd += () =>
 					{
-						notifyln("Made it to Proxyclient.OnEnd");
 						LocalListener.End();
-						notifyln("Connection to proxy server dropped.");
-						Reactor.Loop.Stop();
+						notifyln("Connection to proxy server dropped (Proxy).");
+						// Reactor.Loop.Stop();
+						// ServerAction(strSocksIP, socksPort, localPort);
 					};
 
 					LocalListener.OnData += (data) =>
@@ -80,26 +72,32 @@ namespace ProxyPunch
 
 					LocalListener.OnConnect += () =>
 					{
-						notifyln(String.Format("Listening on 127.0.0.1:{0}", localPort));
-						notifyln("Please point your application's proxy settings to that address.");
+						notifyln(String.Format("Received connection on 127.0.0.1:{0}", localPort));
 					};
 
 					LocalListener.OnError += (error) =>
 					{
 						ProxyClient.End();
-						notifyln(String.Format("Connection on local listener dropped:\n\r{0}\n", error.Message));
-						Reactor.Loop.Stop();
+						notifyln("Connection on local listener dropped:");
+						notifyln(error.Message);
+						// ServerAction(strSocksIP, socksPort, localPort);
 					};
 
 					LocalListener.OnEnd += () =>
 					{
-						notifyln("Connection ended locally.");
-						Reactor.Loop.Stop();
+						ServerAction(strSocksIP, socksPort, localPort);
 					};
+
+					// route socket data to the local listener.
+					LocalListener.OnData += ProxyClient.Write;
+
+					LocalListener.OnEnd += ProxyClient.End;
+
+					// Make sure connection state is reciprocal.
+					ProxyClient.OnEnd += LocalListener.End;
 
 				};
 			}).Listen(localPort);
-			// Reactor.Loop.Stop();
 		}
 
 		private void notifyln(string input)
@@ -124,6 +122,7 @@ namespace ProxyPunch
 
 		private void btnBind_Click(object sender, EventArgs e)
 		{
+			Reactor.Loop.Stop();
 			ServerAction(txtSocksIP.Text, Convert.ToInt32(txtSocksPort.Text), Convert.ToInt32(txtLocalPort.Text));
 		}
 
