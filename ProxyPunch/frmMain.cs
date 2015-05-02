@@ -51,12 +51,15 @@ namespace ProxyPunch
 					// route local events to the socket.
 					ProxyClient.OnData += (data) =>
 					{
+						notifyln("Made it to Proxyclient.OnData");
 						LocalListener.Write(data);
 						notifyln(data.ToString(Encoding.ASCII));
 					};
 
 					ProxyClient.OnError += (error) =>
 					{
+						notifyln("Made it to Proxyclient.OnError");
+
 						LocalListener.End();
 						notifyln(String.Format("Connection to proxy server dropped:\n{0}\n", error.Message));
 						Reactor.Loop.Stop();
@@ -64,6 +67,7 @@ namespace ProxyPunch
 
 					ProxyClient.OnEnd += () =>
 					{
+						notifyln("Made it to Proxyclient.OnEnd");
 						LocalListener.End();
 						notifyln("Connection to proxy server dropped.");
 						Reactor.Loop.Stop();
