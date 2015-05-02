@@ -39,6 +39,7 @@ namespace ProxyPunch
 				Reactor.Tcp.Socket ProxyClient = Reactor.Tcp.Socket.Create(strSocksIP, socksPort);
 				ProxyClient.OnConnect += () =>
 				{
+					notifyln("Made it to Proxyclient.OnConnect");
 					notifyln(String.Format("Connection established with proxy server {0}:{1}.", strSocksIP, socksPort));
 
 					// route socket data to the local listener.
@@ -59,7 +60,6 @@ namespace ProxyPunch
 					ProxyClient.OnError += (error) =>
 					{
 						notifyln("Made it to Proxyclient.OnError");
-
 						LocalListener.End();
 						notifyln(String.Format("Connection to proxy server dropped:\n{0}\n", error.Message));
 						Reactor.Loop.Stop();
