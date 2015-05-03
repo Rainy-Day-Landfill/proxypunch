@@ -44,60 +44,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Reactor\Action.cs" />
-    <Compile Include="Reactor\Async.cs" />
-    <Compile Include="Reactor\Buffer.cs" />
-    <Compile Include="Reactor\ConcurrentQueue.cs" />
-    <Compile Include="Reactor\ConcurrentStack.cs" />
-    <Compile Include="Reactor\Context.cs" />
-    <Compile Include="Reactor\DynamicAction.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="Reactor\Func.cs" />
-    <Compile Include="Reactor\IDuplexable.cs" />
-    <Compile Include="Reactor\IO.cs" />
-    <Compile Include="Reactor\IReadable.cs" />
-    <Compile Include="Reactor\IWriteable.cs" />
-    <Compile Include="Reactor\Loop.cs" />
-    <Compile Include="Reactor\Messages.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reactor\net\AuthenticationSchemes.cs" />
-    <Compile Include="Reactor\net\AuthenticationSchemeSelector.cs" />
-    <Compile Include="Reactor\net\ChunkedInputStream.cs" />
-    <Compile Include="Reactor\net\ChunkStream.cs" />
-    <Compile Include="Reactor\net\Cookie.cs" />
-    <Compile Include="Reactor\net\CookieCollection.cs" />
-    <Compile Include="Reactor\net\CookieException.cs" />
-    <Compile Include="Reactor\net\Dns.cs" />
-    <Compile Include="Reactor\net\EndPointListener.cs" />
-    <Compile Include="Reactor\net\EndPointManager.cs" />
-    <Compile Include="Reactor\net\HttpBasicIdentity.cs" />
-    <Compile Include="Reactor\net\HttpConnection.cs" />
-    <Compile Include="Reactor\net\HttpListener.cs" />
-    <Compile Include="Reactor\net\HttpListenerContext.cs" />
-    <Compile Include="Reactor\net\HttpListenerException.cs" />
-    <Compile Include="Reactor\net\HttpListenerPrefixCollection.cs" />
-    <Compile Include="Reactor\net\HttpListenerRequest.cs" />
-    <Compile Include="Reactor\net\HttpListenerResponse.cs" />
-    <Compile Include="Reactor\net\HttpStatusCode.cs" />
-    <Compile Include="Reactor\net\HttpStreamAsyncResult.cs" />
-    <Compile Include="Reactor\net\HttpUtility.cs" />
-    <Compile Include="Reactor\net\HttpVersion.cs" />
-    <Compile Include="Reactor\net\ListenerAsyncResult.cs" />
-    <Compile Include="Reactor\net\ListenerPrefix.cs" />
-    <Compile Include="Reactor\net\NetworkCredential.cs" />
-    <Compile Include="Reactor\net\RequestStream.cs" />
-    <Compile Include="Reactor\net\ResponseStream.cs" />
-    <Compile Include="Reactor\net\WebHeaderCollection.cs" />
-    <Compile Include="Reactor\Runtime.cs" />
-    <Compile Include="Reactor\Server.cs" />
-    <Compile Include="Reactor\Settings.cs" />
-    <Compile Include="Reactor\Socket.cs" />
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
