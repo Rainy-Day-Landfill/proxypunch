@@ -103,7 +103,6 @@ namespace ProxyPunch
 
 		// using the class constructor to interface with the form fields
 
-		// create an instance of the form?  how does this work?
 		private readonly frmMain form;
 
 		public TSocket(frmMain form)
@@ -111,6 +110,7 @@ namespace ProxyPunch
 			this.form = form;
 		}
 
+		// this will cause a threading issue from different threads....
 		public void log (string entry)
 		{
 			form.LogLine = entry;
