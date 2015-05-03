@@ -32,23 +32,40 @@ namespace ProxyPunch
 
 		public string LogLine
 		{
-			set { txtOutput.AppendText(value + Environment.NewLine); }
+			set
+			{
+				context.Send( new SendOrPostCallback( ( s ) => 	txtOutput.AppendText(value + Environment.NewLine) ), null );
+			}
 		}
 
+		public SynchronizationContext UIContext
+		{
+			get { return context; }
+		}
+
+		private SynchronizationContext context;
 		public static frmMain _formHandle;
 
 		public frmMain()
 		{
 			InitializeComponent();
-			notifyln("UI Initialized.");
+
 			_formHandle = this;
 
+			//set up the SynchronizationContext
+			context = SynchronizationContext.Current;
+			if (context == null)
+			{
+				context = new SynchronizationContext();
+			}
+
+			notifyln("UI Initialized.");
 			notifyln("Ready to bind a SOCKS IP:PORT to 127.0.0.1:PORT");
 		}
 
 		public void notifyln(string input)
 		{
-			txtOutput.AppendText(input + Environment.NewLine);
+			this.LogLine = input;
 		}
 
 		// some basic byte/string conversion tricks
